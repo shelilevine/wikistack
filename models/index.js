@@ -3,6 +3,8 @@ const db = new Sequelize('postgres://localhost:5432/wikistack', {
   logging: false
 });
 
+
+//define models
 const User = db.define('users', {
   name : {
     type: Sequelize.STRING,
@@ -16,6 +18,7 @@ const User = db.define('users', {
     }
   }
 });
+
 
 const Page = db.define('page', {
   title: {
@@ -34,6 +37,30 @@ const Page = db.define('page', {
     type: Sequelize.ENUM('open', 'closed')
   }
 });
+
+
+
+//add hooks
+Page.beforeValidate((pageInstance, optionsObject) => {
+  pageInstance.slug = createSlug(pageInstance.title);
+})
+
+
+
+
+//utility functions
+
+//create slug function
+function createSlug(postTitle) {
+  // Removes all non-alphanumeric characters from title And make whitespace underscore
+  return postTitle.replace(/\s+/g, '_').replace(/\W/g, '');
+  // const space = ' ';
+  // const specialChar = /[^A-Za-z0-9]/g;
+  // //replace first parameter with the second
+  // postTitle = postTitle.replace(space, '_');
+  // postTitle = postTitle.replace(specialChar, '');
+}
+
 
 
 module.exports = {Page, User, db};

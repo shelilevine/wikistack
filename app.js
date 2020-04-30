@@ -4,22 +4,29 @@ const app = express();
 //import sequelize models
 const models = require('./models');
 
+//import routes for user and wiki pages
+const userRouter = require('./routes/user.js');
+const wikiRouter = require('./routes/wiki.js');
+
 //view functions
 const layout = require("./views/layout");
 
 //add middleware and static files
 app.use(morgan("dev"));
-
 app.use(express.static(__dirname + "/public"));
-
 app.use(express.urlencoded({extended: false}));
 
 
+
+
 //define routes
+app.use('/wiki', wikiRouter);
+
+app.use('/user', userRouter);
+
 
 app.get('/', (req, res, next) => {
-    console.log('hello world!');
-    res.send(layout(''));
+    res.redirect('/wiki')
 })
 
 
