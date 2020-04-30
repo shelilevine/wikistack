@@ -39,6 +39,9 @@ const Page = db.define('page', {
 });
 
 
+//add relations
+Page.belongsTo(User, { as: 'author' });
+
 
 //add hooks
 Page.beforeValidate((pageInstance, optionsObject) => {

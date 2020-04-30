@@ -19,18 +19,37 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   // res.json(req.body) //sends the body of the requests in json format
-
-  //create new page instance
-  const page = new Page({
-    title : req.body.title,
-    content : req.body.content
-  })
-
-  // make sure we only redirect *after* our save is complete!
-  // note: `.save` returns a promise.
   try {
+  //create new author instance
+    const [author, isNewAuthor] = await User.findOrCreate({
+      where : {
+        name : req.body.authorName,
+        email : req.body.authorEmail
+      }
+    })
 
+
+
+    //create new page instance
+    const page = new Page({
+      title : req.body.title,
+      content : req.body.content,
+      // authorId : author.id,
+      status : req.body.status
+    })
+
+    //alt
+    //const page = await Page.create(req.body);
+
+
+    // make sure we only redirect *after* our save is complete!
+    // note: `.save` returns a promise.
+
+    //save new page instance
     await page.save();
+    //set author id of the page to the id of the author
+    page.setAuthor(author);
+
     console.log(page.dataValues);
     res.redirect(`/wiki/${page.slug}`);
 
@@ -60,12 +79,6 @@ router.get('/:slug', async (req, res, next) => {
   } catch(err) {
     next(err);
   }
-
-
-
-
-
-  res.send(`This is the route for ${slug}`);
 })
 
 

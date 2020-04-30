@@ -40,7 +40,8 @@ const PORT = 3000;
 
 const init = async () => {
     // this drops all tables then recreates them based on our JS definitions
-    await models.db.sync({force: true})
+    // await models.db.sync({force: true})
+    await models.db.sync()
     app.listen(PORT, () => {console.log('Listening in port 3000')})
 }
 
