@@ -51,6 +51,7 @@ router.post('/', async (req, res, next) => {
     page.setAuthor(author);
 
     console.log(page.dataValues);
+    console.log(page);
     res.redirect(`/wiki/${page.slug}`);
 
   } catch(err) {
@@ -73,20 +74,16 @@ router.get('/:slug', async (req, res, next) => {
         slug : req.params.slug
       }
     });
+    //get author
+    const author = await pageWiki.getAuthor();
+
     //return formatted wikipage
-    res.send(wikiPage(pageWiki));
+    res.send(wikiPage(pageWiki, author));
 
   } catch(err) {
     next(err);
   }
 })
-
-
-
-
-
-
-
 
 
 

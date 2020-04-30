@@ -43,6 +43,7 @@ const Page = db.define('page', {
 Page.belongsTo(User, { as: 'author' });
 
 
+
 //add hooks
 Page.beforeValidate((pageInstance, optionsObject) => {
   pageInstance.slug = createSlug(pageInstance.title);

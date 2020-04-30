@@ -11,12 +11,38 @@ const { addPage, editPage, main, userList, userPages, wikiPage } = require ('../
 
 
 router.get('/', async (req, res, next) => {
-  const allUsers = await User.findAll();
-  const html = userList(allUsers);
-  res.send(html);
+  try {
+    const allUsers = await User.findAll();
+    const html = userList(allUsers);
+    res.send(html);
+    } catch(err) {
+      next(err);
+    }
 })
 
 router.get('/:id', async (req, res, next) => {
+  try{
+    //get user with given id
+    const user = await User.findByPk(req.params.id);
+
+    //get all pages written by user
+    const pages = await Page.findAll({
+      where : {
+        authorId : req.params.id
+      }
+    });
+
+    //render the user's pages in html and send back
+    const html = userPages(user, pages);
+    res.send(html);
+
+  } catch(err) {
+    next(err);
+  }
+
+
+
+  // })
 
 })
 
