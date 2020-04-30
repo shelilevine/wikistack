@@ -12,7 +12,7 @@ module.exports = (pages) => layout(html`
   <ul class="list-unstyled">
     <ul>
       ${pages.map(page => html`
-        <li>${page.title}</li>`
+        <li><a href="/wiki/${page.slug}">${page.title}</a></li>`
       )}
     </ul>
   </ul>`);
