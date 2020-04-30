@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended: false}));
 app.get('/', (req, res, next) => {
     console.log('hello world!'); 
     res.send(layout('')); 
-});
+})
 
 const PORT = 3000; 
 
